@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Отзывы о продуктах</title>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Добавить отзыв</h1>
+  <input id="productName" type="text" placeholder="Название продукта"><br>
+  <textarea id="reviewText" placeholder="Ваш отзыв"></textarea><br>
+  <button onclick="addReview()">Добавить отзыв</button>
+
+  <script>
+    function addReview() {
+      var productName = document.getElementById('productName').value;
+      var reviewText = document.getElementById('reviewText').value;
+
+      var reviews = JSON.parse(localStorage.getItem('reviews')) || {};
+      reviews[productName] = reviews[productName] || [];
+      reviews[productName].push(reviewText);
+      localStorage.setItem('reviews', JSON.stringify(reviews));
+
+      window.location.href = 'reviews.html';
+    }
+  </script>
+</body>
+</html>

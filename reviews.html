@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Отзывы о продуктах</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Отзывы о продуктах</h1>
+  <ul id="productList"></ul>
+
+  <script>
+    var reviews = JSON.parse(localStorage.getItem('reviews')) || {};
+
+    var productList = document.getElementById('productList');
+    for (var product in reviews) {
+      var listItem = document.createElement('li');
+      listItem.innerHTML = '<a href="#" onclick="showReviews(\'' + product + '\')">' + product + '</a>';
+      productList.appendChild(listItem);
+    }
+
+    function showReviews(product) {
+      var reviewList = reviews[product];
+      var reviewDisplay = reviewList.map(function(review) {
+        return '<li>' + review + ' <button onclick="deleteReview(\'' + product + '\', \'' + review + '\')">Удалить</button></li>';
+      }).join('');
+      productList.innerHTML = reviewDisplay;
+      var backButton = document.createElement('button');
+      backButton.innerHTML = 'Назад';
+      backButton.onclick = function() {
+        window.location.href = 'reviews.html';
+      };
+      productList.appendChild(backButton);
+    }
+
+    function deleteReview(product, review) {
+      var index = reviews[product].indexOf(review);
+      if (index !== -1) {
+        reviews[product].splice(index, 1);
+        localStorage.setItem('reviews', JSON.stringify(reviews));
+        showReviews(product);
+      }
+    }
+  </script>
+</body>
+</html>
